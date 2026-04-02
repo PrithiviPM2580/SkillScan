@@ -5,6 +5,10 @@ export const findUserByEmail = async (email: string) => {
   return User.findOne({ email }).lean();
 };
 
+export const findByEmail = async (email: string) => {
+  return User.findByEmail(email);
+};
+
 export const createUser = async (userData: RegisterInput) => {
   return User.create(userData);
 };
