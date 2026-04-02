@@ -22,4 +22,5 @@ coverage/
 *.tscache
 *.vscode/
 *.idea/
+client/.git_nested_backup_*
 *.env
