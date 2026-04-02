@@ -4,7 +4,7 @@ import authRouter from "./auth.route";
 const router: Router = Router();
 
 router.get("/", (_req, res) => {
-  res.send("Welcome to SkillScan API");
+  res.status(200).json({ message: "Welcome to the API" });
 });
 
 router.get("/health", (_req, res) => {
@@ -13,7 +13,7 @@ router.get("/health", (_req, res) => {
 
 router.use("/api/v1/auth", authRouter);
 
-router.all("*", (_req, res) => {
+router.all("/{*any}", (_req, res) => {
   res.status(404).json({ error: "Route not found" });
 });
 
