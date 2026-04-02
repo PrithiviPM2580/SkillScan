@@ -3,6 +3,9 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
 
     "module": "esnext",
     "target": "esnext",
@@ -27,9 +30,6 @@
     "skipLibCheck": true,
 
     "allowImportingTsExtensions": false
-
-    // optional:
-    // "paths": { "@/*": ["./src/*"] }
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules", "dist"]

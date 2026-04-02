@@ -35,6 +35,12 @@ importers:
       morgan:
         specifier: ^1.10.1
         version: 1.10.1
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
+      zod-express-validator:
+        specifier: ^0.0.6
+        version: 0.0.6(express@5.2.1)(zod@4.3.6)
     devDependencies:
       '@types/bcrypt':
         specifier: ^6.0.0
@@ -907,6 +913,15 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
+  zod-express-validator@0.0.6:
+    resolution: {integrity: sha512-oOSits6dkBJ+cIWjgFBPYe/XvQCJk2FQ0yWMKSfg9O8V7WRhCfQSkxXrANZ6gwpGCfMsrGM8PPs0/Xlux51BWw==}
+    peerDependencies:
+      express: ^5.1.0
+      zod: ^4.0.10
+
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
+
 snapshots:
 
   '@esbuild/aix-ppc64@0.27.5':
@@ -1706,3 +1721,10 @@ snapshots:
       webidl-conversions: 7.0.0
 
   wrappy@1.0.2: {}
+
+  zod-express-validator@0.0.6(express@5.2.1)(zod@4.3.6):
+    dependencies:
+      express: 5.2.1
+      zod: 4.3.6
+
+  zod@4.3.6: {}
