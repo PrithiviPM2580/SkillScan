@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { UserIcon, MailIcon, LockKeyholeIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,8 +22,12 @@ import {
   registerSchema,
   type RegisterInput,
 } from "../validation/auth-validation";
+import useAuth from "../hooks/useAuth";
+import { SpinnerCustom } from "@/components/ui/spinner";
+import CustomError from "@/components/CustomError";
 
 const Register = () => {
+  const { registerUser, loading, error, user } = useAuth();
   const form = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -33,7 +37,21 @@ const Register = () => {
     },
   });
 
-  function onSubmit(_data: RegisterInput) {}
+  async function onSubmit(data: RegisterInput) {
+    await registerUser(data);
+  }
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (loading) {
+    return <SpinnerCustom />;
+  }
+
+  if (error) {
+    return <CustomError message="Failed to register. Please try again." />;
+  }
 
   return (
     <section className="w-full h-svh flex items-center justify-center px-4">
@@ -134,6 +152,7 @@ const Register = () => {
             type="submit"
             form="form-rhf-demo"
             className="w-full rounded-sm py-6"
+            disabled={loading}
           >
             Register
           </Button>
