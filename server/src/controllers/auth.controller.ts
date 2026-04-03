@@ -4,6 +4,7 @@ import {
   registerService,
   loginService,
   logoutService,
+  getCurrentUserService,
 } from "@/services/auth.service";
 import cookie from "@/utils/cookie.util";
 
@@ -26,7 +27,7 @@ export const loginController = async (
 
   cookie.set(res, "token", token);
 
-  sendResponse(res, 200, true, "User logged in successfully", { user, token });
+  sendResponse(res, 200, true, "User logged in successfully", { user });
 };
 
 export const logoutController = async (
@@ -40,4 +41,13 @@ export const logoutController = async (
   cookie.clear(res, "token");
 
   sendResponse(res, 200, true, "User logged out successfully");
+};
+
+export const getCurrentUserController = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { user } = await getCurrentUserService(req.user?.id);
+
+  sendResponse(res, 200, true, "Current user retrieved successfully", { user });
 };

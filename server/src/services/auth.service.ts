@@ -2,6 +2,7 @@ import {
   createUser,
   findByEmail,
   findUserByEmail,
+  getUserById,
 } from "@/repositories/auth.repository";
 import { AppError } from "@/utils/error.util";
 import { generateToken } from "@/utils/jwt.util";
@@ -27,7 +28,14 @@ export const registerService = async (registerData: RegisterInput) => {
     email: newUser.email,
   });
 
-  return { user: newUser, token };
+  return {
+    user: {
+      id: newUser._id,
+      username: newUser.username,
+      email: newUser.email,
+    },
+    token,
+  };
 };
 
 export const loginService = async (loginData: LoginInput) => {
@@ -53,7 +61,14 @@ export const loginService = async (loginData: LoginInput) => {
     email: user.email,
   });
 
-  return { user, token };
+  return {
+    user: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    },
+    token,
+  };
 };
 
 export const logoutService = async (token?: string) => {
@@ -63,4 +78,24 @@ export const logoutService = async (token?: string) => {
   }
 
   return;
+};
+
+export const getCurrentUserService = async (userId?: string) => {
+  if (!userId) {
+    throw new AppError("User not authenticated", 401);
+  }
+
+  const user = await getUserById(userId);
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  return {
+    user: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    },
+  };
 };
