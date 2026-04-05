@@ -6,6 +6,7 @@ const ENV = {
   JWT_EXPIRES_IN: process.env["JWT_EXPIRES_IN"],
   JWT_COOKIE_EXPIRES_IN: process.env["JWT_COOKIE_EXPIRES_IN"],
   CLIENT_URL: process.env["CLIENT_URL"],
+  GEMINI_API_KEY: process.env["GEMINI_API_KEY"],
 };
 
 export default ENV;

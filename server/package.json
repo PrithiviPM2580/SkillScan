@@ -19,6 +19,7 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
+    "@types/multer": "^2.1.0",
     "@types/node": "^25.5.0",
     "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
@@ -26,6 +27,7 @@
     "typescript": "^6.0.2"
   },
   "dependencies": {
+    "@google/genai": "^1.48.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
@@ -35,7 +37,10 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.3.3",
     "morgan": "^1.10.1",
+    "multer": "^2.1.1",
+    "pdf-parse": "^2.4.5",
     "zod": "^4.3.6",
-    "zod-express-validator": "^0.0.6"
+    "zod-express-validator": "^0.0.6",
+    "zod-to-json-schema": "^3.25.2"
   }
 }
