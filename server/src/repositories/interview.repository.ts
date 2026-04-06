@@ -15,3 +15,24 @@ export const createInterview = async (interviewData: {
     ...interviewReport,
   });
 };
+
+export const getInterviewReport = async (
+  interviewId: string,
+  userId: string,
+) => {
+  return InterviewReport.findOne({
+    _id: interviewId,
+    user: userId,
+  }).lean();
+};
+
+export const getAllInterview = async (userId: string) => {
+  return InterviewReport.find({
+    user: userId,
+  })
+    .sort({ createdAt: -1 })
+    .select(
+      "-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan",
+    )
+    .lean();
+};

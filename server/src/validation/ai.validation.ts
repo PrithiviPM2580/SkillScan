@@ -1,6 +1,11 @@
 import { z } from "zod/v3";
 
 export const interviewReportSchema = z.object({
+  title: z
+    .string()
+    .describe(
+      "A descriptive title for the interview report, e.g., 'Software Engineer Interview Report'",
+    ),
   matchScore: z
     .number()
     .describe(

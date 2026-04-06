@@ -22,6 +22,7 @@ type IBehavioralQuestion = IQuestion;
 
 export interface IInterviewReport extends Document {
   user: mongoose.Types.ObjectId;
+  title: string;
   jobDescription: string;
   resume?: string;
   selfDescription?: string;
@@ -74,6 +75,7 @@ const preparationPlanSchema = new Schema<IPreparationPlan>(
 const interviewReportSchema = new Schema<IInterviewReport>(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    title: { type: String, required: true },
     jobDescription: { type: String, required: true },
     resume: { type: String },
     selfDescription: { type: String },

@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { MailIcon, LockKeyholeIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,8 +21,12 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginInput } from "../validation/auth-validation";
+import useAuth from "../hooks/useAuth";
+import { SpinnerCustom } from "@/components/ui/spinner";
+import CustomError from "@/components/CustomError";
 
 const Login = () => {
+  const { loginUser, loading, error, user } = useAuth();
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -31,7 +35,22 @@ const Login = () => {
     },
   });
 
-  function onSubmit(data: LoginInput) {}
+  async function onSubmit(data: LoginInput) {
+    await loginUser(data);
+    toast.success("Logged in successfully!");
+  }
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (loading) {
+    return <SpinnerCustom />;
+  }
+
+  if (error) {
+    return <CustomError message="Failed to login. Please try again." />;
+  }
 
   return (
     <section className="w-full h-svh flex items-center justify-center px-4">

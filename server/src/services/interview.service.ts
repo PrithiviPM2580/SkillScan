@@ -2,7 +2,11 @@ import { generateInterviewReport } from "@/ai/index.ai";
 import { AppError } from "@/utils/error.util";
 import { parsePdf } from "@/utils/parse-pdf.util";
 import { CreateInterviewInput } from "@/validation/interview.validation";
-import { createInterview } from "@/repositories/interview.repository";
+import {
+  createInterview,
+  getInterviewReport,
+  getAllInterview,
+} from "@/repositories/interview.repository";
 import { interviewReportSchema } from "@/validation/ai.validation";
 
 export const createInterviewService = async (
@@ -40,4 +44,35 @@ export const createInterviewService = async (
   });
 
   return interview;
+};
+
+export const getInterviewService = async (
+  interviewId: string,
+  userId?: string,
+) => {
+  if (!userId) {
+    throw new AppError("Unauthorized", 401);
+  }
+
+  const interviewReport = await getInterviewReport(interviewId, userId);
+
+  if (!interviewReport) {
+    throw new AppError("Interview report not found", 404);
+  }
+
+  return interviewReport;
+};
+
+export const getAllInterviewService = async (userId?: string) => {
+  if (!userId) {
+    throw new AppError("Unauthorized", 401);
+  }
+
+  const interviews = await getAllInterview(userId);
+
+  if (interviews.length === 0) {
+    throw new AppError("No interview reports found", 404);
+  }
+
+  return interviews;
 };

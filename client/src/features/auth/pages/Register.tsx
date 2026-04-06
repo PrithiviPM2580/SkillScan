@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { UserIcon, MailIcon, LockKeyholeIcon } from "lucide-react";
 import { Link, Navigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -39,6 +40,7 @@ const Register = () => {
 
   async function onSubmit(data: RegisterInput) {
     await registerUser(data);
+    toast.success("Registered successfully! Please login.");
   }
 
   if (user) {

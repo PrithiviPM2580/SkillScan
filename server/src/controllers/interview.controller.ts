@@ -1,6 +1,11 @@
 import sendResponse from "@/utils/send-response.util";
 import type { Request, Response } from "express";
-import { createInterviewService } from "@/services/interview.service";
+import {
+  createInterviewService,
+  getInterviewService,
+  getAllInterviewService,
+} from "@/services/interview.service";
+import { AppError } from "@/utils/error.util";
 
 export const createInterviewController = async (
   req: Request,
@@ -13,4 +18,30 @@ export const createInterviewController = async (
   );
 
   sendResponse(res, 201, true, "Interview created successfully", { interview });
+};
+
+export const getInterviewController = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const interviewId = req.params["id"];
+
+  if (typeof interviewId !== "string") {
+    throw new AppError("Invalid interview ID", 400);
+  }
+
+  const interview = await getInterviewService(interviewId, req.user?.id);
+
+  sendResponse(res, 200, true, "Interview fetched successfully", { interview });
+};
+
+export const getAllInterviewController = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const interviews = await getAllInterviewService(req.user?.id);
+
+  sendResponse(res, 200, true, "Interviews fetched successfully", {
+    interviews,
+  });
 };
