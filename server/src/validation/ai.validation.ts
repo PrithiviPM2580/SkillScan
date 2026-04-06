@@ -74,4 +74,13 @@ export const interviewReportSchema = z.object({
     .describe("An array of preparation plan items for the candidate"),
 });
 
+export const resumePdfSchema = z.object({
+  html: z
+    .string()
+    .describe(
+      "The HTML content of the resume which can be converted to PDF using any library like Puppeteer.",
+    ),
+});
+
 export type InterviewReportType = z.infer<typeof interviewReportSchema>;
+export type ResumePdfType = z.infer<typeof resumePdfSchema>;

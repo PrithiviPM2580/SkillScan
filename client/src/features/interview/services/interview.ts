@@ -25,3 +25,14 @@ export const getAllInterviewReports = async () => {
   const response = await api.get("/interview");
   return response.data;
 };
+
+export const generateInterviewReportPdf = async (interviewId: string) => {
+  const response = await api.post(
+    `/interview/resume/pdf/${interviewId}`,
+    {},
+    {
+      responseType: "blob",
+    },
+  );
+  return response.data;
+};

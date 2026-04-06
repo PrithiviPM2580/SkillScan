@@ -4,6 +4,7 @@ import {
   getAllInterviewReports,
   getInterviewReport,
   createInterviewReport,
+  generateInterviewReportPdf,
 } from "../services/interview";
 import type { CreateInterviewInput } from "../validation/interview";
 
@@ -59,6 +60,30 @@ const useInterview = () => {
     [setLoading, setReport, setError],
   );
 
+  const getResumePdf = useCallback(
+    async (interviewId: string) => {
+      setLoading(true);
+      try {
+        const response = await generateInterviewReportPdf(interviewId);
+        const blob = new Blob([response], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `resume_${interviewId}.html`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } catch (error) {
+        setError("Failed to download resume");
+        console.error("Error downloading resume:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [setLoading, setError],
+  );
+
   const getAllReports = useCallback(async () => {
     setLoading(true);
     try {
@@ -81,6 +106,7 @@ const useInterview = () => {
     createReport,
     getReportById,
     getAllReports,
+    getResumePdf,
   };
 };
 

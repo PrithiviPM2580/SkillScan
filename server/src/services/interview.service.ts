@@ -1,4 +1,4 @@
-import { generateInterviewReport } from "@/ai/index.ai";
+import { generateInterviewReport, generateResumePdf } from "@/ai/index.ai";
 import { AppError } from "@/utils/error.util";
 import { parsePdf } from "@/utils/parse-pdf.util";
 import { CreateInterviewInput } from "@/validation/interview.validation";
@@ -6,8 +6,10 @@ import {
   createInterview,
   getInterviewReport,
   getAllInterview,
+  getInterviewReportById,
 } from "@/repositories/interview.repository";
 import { interviewReportSchema } from "@/validation/ai.validation";
+import { generatePdfFromHtml } from "@/utils/generate-pdf-from-html";
 
 export const createInterviewService = async (
   interviewData: CreateInterviewInput,
@@ -75,4 +77,30 @@ export const getAllInterviewService = async (userId?: string) => {
   }
 
   return interviews;
+};
+
+export const generateResumePdfService = async (
+  interviewId: string,
+  userId?: string,
+) => {
+  if (!userId) {
+    throw new AppError("Unauthorized", 401);
+  }
+
+  const interviewReport = await getInterviewReportById(interviewId, userId);
+  if (!interviewReport) {
+    throw new AppError("Interview report not found", 404);
+  }
+  const { resume, selfDescription, jobDescription } = interviewReport;
+
+  if (!resume || !selfDescription || !jobDescription) {
+    throw new AppError("Incomplete interview report", 400);
+  }
+
+  const pdfBuffer = await generateResumePdf({
+    resume,
+    selfDescription,
+    jobDescription,
+  });
+  return pdfBuffer;
 };

@@ -2,6 +2,7 @@ import {
   createInterviewController,
   getInterviewController,
   getAllInterviewController,
+  generateResumePdfController,
 } from "@/controllers/interview.controller";
 import asyncHandler from "@/middlewares/async-handler.middleware";
 import authenticate from "@/middlewares/authenticate.middleware";
@@ -35,5 +36,13 @@ interviewRouter
 interviewRouter
   .route("/")
   .get(authenticate, asyncHandler(getAllInterviewController));
+
+interviewRouter
+  .route("/resume/pdf/:id")
+  .post(
+    authenticate,
+    validateRequest({ params: interviewIdParamSchema }),
+    asyncHandler(generateResumePdfController),
+  );
 
 export default interviewRouter;

@@ -2,12 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import {
   ChevronDown,
   Compass,
+  Download,
   Gauge,
   MessageSquare,
   Sparkles,
   Wrench,
 } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import useInterview from "../hooks/useInterview";
@@ -72,7 +74,7 @@ const Interview = () => {
   const [activeSection, setActiveSection] = useState<SectionKey>("technical");
   const [openQuestion, setOpenQuestion] = useState(0);
   const { interviewId } = useParams();
-  const { report, loading, getReportById } = useInterview();
+  const { report, loading, getReportById, getResumePdf } = useInterview();
 
   useEffect(() => {
     if (interviewId) {
@@ -109,6 +111,15 @@ const Interview = () => {
 
   const quickWins = preparationPlan.flatMap((item) => item.tasks).slice(0, 3);
   const topGaps = skillGaps.slice(0, 2).map((item) => item.skill);
+  const reportId = reportData?._id ?? interviewId;
+
+  const handleDownloadResume = async () => {
+    if (!reportId) {
+      return;
+    }
+
+    await getResumePdf(reportId);
+  };
 
   if (loading && !report) {
     return <SpinnerCustom />;
@@ -302,6 +313,21 @@ const Interview = () => {
                     </p>
                   </div>
                 </div>
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                <p className="text-xs font-semibold tracking-[0.22em] text-slate-500 uppercase">
+                  Actions
+                </p>
+                <Button
+                  type="button"
+                  onClick={handleDownloadResume}
+                  disabled={!reportId || loading}
+                  className="mt-3 w-full justify-center rounded-xl"
+                >
+                  <Download className="size-4" />
+                  Download Resume PDF
+                </Button>
               </div>
 
               <div>

@@ -36,3 +36,12 @@ export const getAllInterview = async (userId: string) => {
     )
     .lean();
 };
+export const getInterviewReportById = async (
+  interviewId: string,
+  userId: string,
+) => {
+  return InterviewReport.findOne({
+    _id: interviewId,
+    user: userId,
+  });
+};

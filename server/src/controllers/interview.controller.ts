@@ -4,6 +4,7 @@ import {
   createInterviewService,
   getInterviewService,
   getAllInterviewService,
+  generateResumePdfService,
 } from "@/services/interview.service";
 import { AppError } from "@/utils/error.util";
 
@@ -44,4 +45,23 @@ export const getAllInterviewController = async (
   sendResponse(res, 200, true, "Interviews fetched successfully", {
     interviews,
   });
+};
+
+export const generateResumePdfController = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const interviewId = req.params["id"];
+
+  if (typeof interviewId !== "string") {
+    throw new AppError("Invalid interview ID", 400);
+  }
+
+  const htmlBuffer = await generateResumePdfService(interviewId, req.user?.id);
+
+  res.set({
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Disposition": `attachment; filename="resume_${interviewId}.html"`,
+  });
+  res.send(htmlBuffer);
 };

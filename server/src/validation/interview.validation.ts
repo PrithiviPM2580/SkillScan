@@ -7,11 +7,9 @@ export const createInterviewSchema = z.object({
 });
 
 export const interviewIdParamSchema = z.object({
-  id: z
-    .string()
-    .refine((val) => mongoose.Types.ObjectId.isValid(val), {
-      message: "Invalid interview ID (must be a valid ObjectId)",
-    }),
+  id: z.string().refine((val) => mongoose.Types.ObjectId.isValid(val), {
+    message: "Invalid interview ID (must be a valid ObjectId)",
+  }),
 });
 
 export type CreateInterviewInput = z.infer<typeof createInterviewSchema>;
